@@ -4,7 +4,7 @@
 		<div class="pageSize" style="display: flex; margin-top: 50px;" >
 			<div>
 				<div class="sidebar">
-					<a href="?dashboard"  class="active"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
+					<a href="?dashboard"  class="active1"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 					<div class="dropdown-divider"></div>
 					<a href="?patient"><i class="fas fa-user-injured"></i><span style="margin-left: 10px;">Patient</span></a>
 					<a href="?doctor"><i class="fas fa-user-md"></i><span style="margin-left: 10px;">Doctor</span></a>

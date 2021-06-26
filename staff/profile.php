@@ -12,7 +12,7 @@
 					<a href="?drugs"><i class="fas fa-capsules"></i><span style="margin-left: 10px;">Drugs</span></a>
 					<a href="?billing"><i class="fas fa-money-bill-alt"></i></i><span style="margin-left: 10px;">Billing</span></a>
 					<div class="dropdown-divider"></div>
-					<a href="?profile" class="active"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
+					<a href="?profile" class="active1"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
 				</div>
 			</div>
 			<div style="width: 100%;">

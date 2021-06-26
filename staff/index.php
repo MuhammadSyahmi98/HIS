@@ -11,8 +11,9 @@ $staff_id = $_SESSION['staff_id'];
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+	<meta charset="utf-8" lang="EN">
 	<title>Staff</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -22,6 +23,9 @@ $staff_id = $_SESSION['staff_id'];
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	<link href="../src/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="../src/style.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
 	<style type="text/css">
 		.sidebar {
@@ -43,7 +47,7 @@ $staff_id = $_SESSION['staff_id'];
 		.sidebar a:hover {
 		  color: black;
 		}
-		.active{
+		.active1{
 			background-color:  #33cabb;
 			color: white !important;
 		}
@@ -52,161 +56,69 @@ $staff_id = $_SESSION['staff_id'];
 		  margin-left: 5%;
 		  margin-right: 5%;
 		}
-
-		/*pagination*/
-		.table-responsive {
-		    margin: 30px 0;
-		}
-		.table-wrapper {
-		    min-width: 1000px;
-		    background: #fff;
-		    padding: 20px;
-		    box-shadow: 0 1px 1px rgba(0,0,0,.05);
-		}
-		.table-title {
-		    padding-bottom: 10px;
-		    margin: 0 0 10px;
-		    min-width: 100%;
-		}
-		.table-title h2 {
-		    margin: 8px 0 0;
-		    font-size: 22px;
-		}
-		.search-box {
-		    position: relative;        
-		    float: right;
-		}
-		.search-box input {
-		    height: 34px;
-		    border-radius: 20px;
-		    padding-left: 35px;
-		    border-color: #ddd;
-		    box-shadow: none;
-		}
-		.search-box input:focus {
-		    border-color: #3FBAE4;
-		}
-		.search-box i {
-		    color: #a0a5b1;
-		    position: absolute;
-		    font-size: 19px;
-		    top: 8px;
-		    left: 10px;
-		}
-		table.table tr th, table.table tr td {
-		    border-color: #e9e9e9;
-		}
-		table.table-striped tbody tr:nth-of-type(odd) {
-		    background-color: #fcfcfc;
-		}
-		table.table-striped.table-hover tbody tr:hover {
-		    background: #f5f5f5;
-		}
-		table.table th i {
-		    font-size: 13px;
-		    margin: 0 5px;
-		    cursor: pointer;
-		}
-		table.table td:last-child {
-		    width: 130px;
-		}
-		table.table td a {
-		    color: #a0a5b1;
-		    display: inline-block;
-		    margin: 0 5px;
-		}
-		table.table td a.view {
-		    color: #03A9F4;
-		}
-		table.table td a.edit {
-		    color: #FFC107;
-		}
-		table.table td a.delete {
-		    color: #E34724;
-		}
-		table.table td i {
-		    font-size: 19px;
-		}    
-		.pagination {
-		    float: right;
-		    margin: 0 0 5px;
-		}
-		.pagination li a {
-		    border: none;
-		    font-size: 95%;
-		    width: 30px;
-		    height: 30px;
-		    color: #999;
-		    margin: 0 2px;
-		    line-height: 30px;
-		    border-radius: 30px !important;
-		    text-align: center;
-		    padding: 0;
-		}
-		.pagination li a:hover {
-		    color: #666;
-		}	
-		.pagination li.active a {
-		    background: #03A9F4;
-		}
-		.pagination li.active a:hover {        
-		    background: #0397d6;
-		}
-		.pagination li.disabled i {
-		    color: #ccc;
-		}
-		.pagination li i {
-		    font-size: 16px;
-		    padding-top: 6px
-		}
-		.hint-text {
-		    float: left;
-		    margin-top: 6px;
-		    font-size: 95%;
-		} 
-
-		/*filtertable   */
-
 	</style>
 </head>
 <body>
-	<script>
-	$(document).ready(function(){
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-	</script>
-	<?php include('header.php') ?>
+
+	<?php include('header.php') ?>	
 	
 	<?php include('dashboard.php') ?>
 	<?php include('patient.php') ?>
 	<?php include('addpatient.php') ?>
 	<?php include('doctor.php') ?>
+	<?php include('treatpatient.php') ?>
 	<?php include('order.php') ?>
 	<?php include('drugs.php') ?>
+	<?php include('adddrug.php') ?>
 	<?php include('billing.php') ?>
 	<?php include('profile.php') ?>
-	
 
-	<script>
-	$(document).ready(function(){
-	  $("#myInput").on("keyup", function() {
-	    var value = $(this).val().toLowerCase();
-	    $("#myTable tr").filter(function() {
-	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-	    });
-	  });
-	});
-	</script>
 
-	<script>
-	$(document).ready(function(){
-	  $("#myInput2").on("keyup", function() {
-	    var value = $(this).val().toLowerCase();
-	    $("#myTable2 tr").filter(function() {
-	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-	    });
-	  });
-	});
+
+
+
+
+	<script type="text/javascript">
+		
+		function addInput(divName){
+		   var refEl = document.getElementById(divName);// refEl can be anything ex: document.body
+
+		   var clone = refEl.cloneNode(true);
+		   var input = clone.getElementsByTagName("INPUT");
+
+
+		   refEl.parentNode.insertBefore(clone, refEl.nextSibling);
+		}
+		
+		$(document).ready(function() {
+		    $('#patientlist').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		} );
+
+		$(document).ready(function() {
+		    $('#queuelist').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		} );
+
+		$(document).ready(function() {
+		    $('#checkuplist').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		} );	
+
+		$(document).ready(function() {
+		    $('#historylist').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		} );	
+
+		$(document).ready(function() {
+		    $('#wardedlist').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		} );	
 	</script>
 </body>
 </html>
