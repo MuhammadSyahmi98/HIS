@@ -59,13 +59,13 @@ if (isset($_POST['add'])) {
 				$patient_id = $row['patient_id'];
 
 				// Insert family
-				$stmt = $conn->prepare("INSERT INTO family_information (family_name, family_phone_number, family_ic_number, family_sex, family_race, family_blood_type, family_address, family_email, family_nationality, patient_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$stmt = $conn->prepare("INSERT INTO family_information (family_name, family_phone_number, family_ic_number, family_sex, family_race, family_blood_type, family_address, family_email, family_nationality, patient_PMI) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				$stmt->bind_param("sssssssssi", $family_name, $family_phone_number, $family_ic_number, $family_sex, $family_race, $family_blood_type, $family_address, $family_email, $family_nationality, $patient_id);
 
 				$stmt->execute();
 
 				// Insert insurance
-				$stmt = $conn->prepare("INSERT INTO insurance_information (insurance_name, insurance_status, patient_id) VALUES (?, ?, ?)");
+				$stmt = $conn->prepare("INSERT INTO insurance_information (insurance_name, insurance_status, patient_PMI) VALUES (?, ?, ?)");
 				$stmt->bind_param("ssi", $insurance_name, $insurance_status, $patient_id);
 
 				$stmt->execute();
@@ -218,8 +218,8 @@ if (isset($_GET['addpatient'])) {
 					<div class="form-group">
 						<label for="insurancestatus">Insurance Status</label><br>
 						<select name="insurance_status" class="form-control" id="insurancestatus">
-							<option>Active</option>
-							<option>Not Active</option>
+							<option value="Active">Active</option>
+							<option value="Not Active">Not Active</option>
 						</select>
 					</div>
 					<hr>
