@@ -1,4 +1,35 @@
 <?php
+if (isset($_POST['addQueue'])) {
+	$patient_PMI = $_POST['queue_id'];
+	$date = date('Y-m-d');
+	$time = date("H:i:s");
+
+	// Check status
+	$sql_patientQueue = "SELECT * FROM patient_queue WHERE patient_PMI = ". $patient_PMI ." AND queue_status = 'waiting'";
+
+	$result_patientQueue = mysqli_query($conn, $sql_patientQueue);
+
+	
+
+	if (!$result_patientQueue->num_rows>0) {
+		// Insert 	
+		$stmt = $conn->prepare("INSERT INTO patient_queue (queue_date, queue_time, patient_PMI) VALUES (?, ?, ?)");
+		$stmt->bind_param("ssi", $date, $time, $patient_PMI);
+
+		 $stmt->execute();
+
+		if ($stmt === true) {
+			echo "<script>alert('Success add to wanting list')</script>";
+		} else {
+			echo "<script>alert('Success add to waiting list')</script>";
+		}
+	} else {
+		echo "<script>alert('Exist in waiting list')</script>";
+	}
+}
+
+
+
 if (isset($_POST['submit'])) {
 	/**
 	 * TODO :: Get all data from form and update
@@ -45,19 +76,19 @@ if (isset($_POST['submit'])) {
 
 	if (true) {
 		// Update
-		$sql = "UPDATE patient_information SET patient_name = '". $patient_name ."', patient_email ='". $patient_email ."', patient_phone_number = '". $patient_phone_number ."', 
-		patient_BOD = '". $patient_BOD ."', patient_ic_number = '". $patient_ic_number ."', patient_sex = '". $patient_sex ."', patient_race = '". $patient_race ."', 
-		patient_blood_type = '". $patient_blood_type ."', patient_address = '". $patient_address ."', patient_nationality = '". $patient_nationality ."' WHERE patient_PMI = ". $patient_PMI ."";
+		$sql = "UPDATE patient_information SET patient_name = '" . $patient_name . "', patient_email ='" . $patient_email . "', patient_phone_number = '" . $patient_phone_number . "', 
+		patient_BOD = '" . $patient_BOD . "', patient_ic_number = '" . $patient_ic_number . "', patient_sex = '" . $patient_sex . "', patient_race = '" . $patient_race . "', 
+		patient_blood_type = '" . $patient_blood_type . "', patient_address = '" . $patient_address . "', patient_nationality = '" . $patient_nationality . "' WHERE patient_PMI = " . $patient_PMI . "";
 
 		if (mysqli_query($conn, $sql)) {
 
 
-			$sql = "UPDATE family_information SET family_name = '". $family_name ."', family_phone_number = '". $family_phone_number ."', family_ic_number = '". $family_ic_number ."', family_sex = '". $family_sex ."', 
-			family_race = '". $family_race ."', family_blood_type = '". $family_blood_type ."', family_address = '". $family_address ."', family_email = '". $family_email ."', family_nationality = '". $family_nationality ."'  WHERE patient_PMI = ". $patient_PMI ."";
+			$sql = "UPDATE family_information SET family_name = '" . $family_name . "', family_phone_number = '" . $family_phone_number . "', family_ic_number = '" . $family_ic_number . "', family_sex = '" . $family_sex . "', 
+			family_race = '" . $family_race . "', family_blood_type = '" . $family_blood_type . "', family_address = '" . $family_address . "', family_email = '" . $family_email . "', family_nationality = '" . $family_nationality . "'  WHERE patient_PMI = " . $patient_PMI . "";
 
 			if (mysqli_query($conn, $sql)) {
 
-				$sql = "UPDATE insurance_information SET insurance_name = '". $insurance_name ."', insurance_status = '". $insurance_status ."' WHERE patient_PMI = ". $patient_PMI ."";
+				$sql = "UPDATE insurance_information SET insurance_name = '" . $insurance_name . "', insurance_status = '" . $insurance_status . "' WHERE patient_PMI = " . $patient_PMI . "";
 
 				if (mysqli_query($conn, $sql)) {
 					echo "<script>alert('Success')</script>";
@@ -153,7 +184,10 @@ if (isset($_GET['patient'])) {
 											</td>
 											<td>
 												<center>
-													<button type="submit" class="btn btn-success">Add to Queue</button>
+													<form method="POST" id="submit_queue<?php echo $i; ?>">
+														<input type="hidden" name="queue_id" value="<?php echo $row__searchPatient['patient_PMI']; ?>">
+														<button onclick="submit_queue($i)" type="submit" name="addQueue" class="btn btn-success">Add to Queue</button>
+													</form>
 												</center>
 											</td>
 											<!-- viewpatient modal -->
@@ -220,7 +254,7 @@ if (isset($_GET['patient'])) {
 
 															<?php
 															$patient_PMI = $row__searchPatient['patient_PMI'];
-															
+
 
 															// search family
 															$sql_searchFamily = "SELECT * FROM family_information WHERE patient_PMI = " . $patient_PMI . "";
@@ -233,7 +267,7 @@ if (isset($_GET['patient'])) {
 
 															?>
 
-														
+
 
 															<br>
 															<h4><b>Family Details</b></h4><br>
@@ -390,7 +424,7 @@ if (isset($_GET['patient'])) {
 																}
 
 																?>
-																<input type="hidden" name="patient_PMI" value="<?php echo $patient_PMI; ?>" >
+																<input type="hidden" name="patient_PMI" value="<?php echo $patient_PMI; ?>">
 																<br>
 																<h4><b>Family Details</b></h4><br>
 																<div class="form-group">
@@ -502,5 +536,9 @@ if (isset($_GET['patient'])) {
 <script type="text/javascript">
 	function submit(value) {
 		document.getElementById("search_form" + value).submit();
+	}
+
+	function submit_queue() {
+		document.getElementById("submit_queue" + value).submit();
 	}
 </script>
