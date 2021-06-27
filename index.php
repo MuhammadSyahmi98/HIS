@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" lang="EN">
     <title>Health Information System</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">

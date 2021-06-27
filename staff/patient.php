@@ -5,7 +5,7 @@ if (isset($_POST['addQueue'])) {
 	$time = date("H:i:s");
 
 	// Check status
-	$sql_patientQueue = "SELECT * FROM patient_queue WHERE patient_PMI = ". $patient_PMI ." AND queue_status = 'waiting'";
+	$sql_patientQueue = "SELECT * FROM patient_queue WHERE patient_PMI = ". $patient_PMI ." AND (queue_status = 'waiting' OR queue_status = 'call')";
 
 	$result_patientQueue = mysqli_query($conn, $sql_patientQueue);
 
@@ -139,6 +139,10 @@ if (isset($_GET['patient'])) {
 								<h2><b>Patient</b> Details</h2>
 							</div>
 						</div>
+					</div>
+					<br>
+					<div>
+						<a href="?addpatient" class="btn btn-primary sign-up-btn" style="width: 100%"><i class="fas fa-plus"></i><span style="margin-left: 10px;">Add Patient</span></a>
 					</div>
 					<br>
 					<div>
@@ -520,10 +524,7 @@ if (isset($_GET['patient'])) {
 							</tbody>
 						</table>
 					</div>
-					<br>
-					<div>
-						<a href="?addpatient" class="btn btn-primary sign-up-btn" style="width: 100%"><i class="fas fa-plus"></i><span style="margin-left: 10px;">Add Patient</span></a>
-					</div>
+					
 				</div>
 			</div>
 		</div>

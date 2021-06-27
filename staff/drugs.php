@@ -1,4 +1,28 @@
 <?php
+if(isset($_POST['update_drug$m'])){
+	$drug_id = $_POST['drug_id'];
+	$drug_name = $_POST['drug_name'];
+	$drug_description = $_POST['drug_description'];
+	$drug_doses = $_POST['drug_doses'];
+	$drug_receive_date = $_POST['drug_receive_date'];
+	$drug_expired_date = $_POST['drug_expired_date'];
+	$drug_quantity = $_POST['drug_quantity'];
+
+
+	$sql = "UPDATE drug_information SET drug_name = '" . $drug_name . "', drug_description = '" . $drug_description . "', drug_doses = '" . $drug_doses . "', drug_date_receive = '" . $drug_receive_date . "', drug_expiry_date = '" . $drug_expired_date . "', drug_quantity = ' " . $drug_quantity . "' WHERE drug_code = " . $drug_id . "";
+
+	if (mysqli_query($conn, $sql)) { 
+		echo "<script>alert('Success update drug')
+		window.location.href='?drugs';
+		</script>";
+	} else{
+		echo "<script>alert('Failed update drug')
+		window.location.href='?drugs';
+		</script>";
+	}
+}
+
+
 if (isset($_GET['drugs'])) {
 ?>
 	<div class="pageSize" style="display: flex; margin-top: 50px;">
@@ -47,102 +71,137 @@ if (isset($_GET['drugs'])) {
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>AstraZeneca</td>
-									<td>55</td>
-									<td>NORMAL</td>
-									<td>
-									
-											<span data-toggle="modal" data-target="#viewdrugs"><a href="#" class="view" title="View" data-toggle="tooltip"><i class="fas fa-eye"></i></a></span>
-											<span data-toggle="modal" data-target="#editdrugs"><a href="#" class="view" title="View" data-toggle="tooltip"><i style="color: orange;" class="fas fa-edit"></i></a></span>
-											<span><a onclick="return confirm('Are you sure you want to delete this patient?');" href="#" class="view" title="View" data-toggle="tooltip"><i style="color: red;" class="fas fa-trash"></i></a></span>
-								
-									</td>
-								</tr>
-								<!-- viewdrug modal -->
-								<div class="modal fade" id="viewdrugs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Drugs Details</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="form-group">
-													<label for="name">Drug Name</label>
-													<input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" disabled>
+								<?php
+								$sql_searchDrug = "SELECT * FROM drug_information";
+
+								$result_searchDrug = mysqli_query($conn, $sql_searchDrug);
+
+								if ($result_searchDrug->num_rows > 0) {
+									$m = 1;
+									while ($row_searchDrug = $result_searchDrug->fetch_assoc()) {
+
+
+								?>
+										<tr>
+											<td><?php echo $m; ?></td>
+											<td><?php echo $row_searchDrug['drug_name']; ?></td>
+											<td><?php echo $row_searchDrug['drug_quantity']; ?></td>
+											<td><?php if ($row_searchDrug['drug_quantity'] > 100) {
+													echo "Normal";
+												} else {
+													echo "Low";
+												} ?></td>
+											<td>
+
+												<span data-toggle="modal" data-target="#viewdrugs<?php echo $m ?>"><a href="#" class="view" title="View" data-toggle="tooltip"><i class="fas fa-eye"></i></a></span>
+												<span data-toggle="modal" data-target="#editdrugs<?php echo $m ?>"><a href="#" class="view" title="View" data-toggle="tooltip"><i style="color: orange;" class="fas fa-edit"></i></a></span>
+												<span><a onclick="return confirm('Are you sure you want to delete this patient?');" href="#" class="view" title="View" data-toggle="tooltip"><i style="color: red;" class="fas fa-trash"></i></a></span>
+
+											</td>
+										</tr>
+										<!-- viewdrug modal -->
+										<div class="modal fade" id="viewdrugs<?php echo $m ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Drugs Details</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="form-group">
+															<label for="name">Drugs Name</label>
+															<input readonly value="<?php echo $row_searchDrug['drug_name']; ?>" type="text" class="form-control" id="name" placeholder="Enter Fullname" name="drug_name">
+														</div>
+														<div class="form-group">
+															<label for="name">Description</label><br>
+															<textarea name="drug_description" rows="6" class="form-control" readonly><?php echo $row_searchDrug['drug_description']; ?></textarea>
+														</div>
+														<div class="form-group">
+															<label for="drug_doses">Doses</label>
+															<input readonly value="<?php echo $row_searchDrug['drug_doses']; ?>" type="text" class="form-control" id="drug_doses" placeholder="Enter Drugs Quantity" name="drug_doses" min="0">
+														</div>
+														<div style="display: flex; justify-content: space-evenly;">
+															<div class="form-group" style="width: 50%">
+																<label for="blood">Received Date</label>
+																<input readonly value="<?php echo $row_searchDrug['drug_date_receive']; ?>" name="drug_receive_date" type="date" max="<?php echo $date; ?>" class="form-control" id="recDate" placeholder="Receive Date">
+															</div>
+															<div class="form-group" style="width: 50%; margin-left: 10px;">
+																<label for="nationality">Expired Date</label>
+																<input readonly value="<?php echo $row_searchDrug['drug_expiry_date']; ?>" name="drug_expired_date" type="date" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Expired Date">
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="quantity">Quantity</label>
+															<input readonly value="<?php echo $row_searchDrug['drug_quantity']; ?>" type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													</div>
 												</div>
-												<div class="form-group">
-													<label for="description">Description</label>
-													<textarea class="form-control" cols="6" disabled></textarea>
-												</div>
-												<div class="form-group">
-													<label for="recDate">Received Date</label>
-													<input type="date" class="form-control" id="recDate" placeholder="Enter Quantty" name="recDate" disabled>
-												</div>
-												<div class="form-group">
-													<label for="expDate">Expired Date</label>
-													<input type="date" class="form-control" id="expDate" placeholder="Enter Quantty" name="expDate" disabled>
-												</div>
-												<div class="form-group">
-													<label for="quantity">Quantity</label>
-													<input type="number" class="form-control" id="name" placeholder="Enter Quantty" name="quantity" disabled>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 											</div>
 										</div>
-									</div>
-								</div>
-								<!-- end viewdrug modal -->
+										<!-- end viewdrug modal -->
 
-								<!-- editdrug modal -->
-								<div class="modal fade" id="editdrugs" tabindex="-3" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Drugs Details</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="form-group">
-													<label for="name">Drug Name</label>
-													<input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+										<!-- editdrug modal -->
+										<div class="modal fade" id="editdrugs<?php echo $m ?>" tabindex="-3" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Drugs Details</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<form method="POST">
+														<div class="modal-body">
+														<input type="hidden" value="<?php echo  $row_searchDrug['drug_code'] ?>" name="drug_id">
+
+															<div class="form-group">
+																<label for="name">Drugs Name</label>
+																<input value="<?php echo $row_searchDrug['drug_name']; ?>" type="text" class="form-control" id="name" placeholder="Enter Fullname" name="drug_name">
+															</div>
+															<div class="form-group">
+																<label for="name">Description</label><br>
+																<textarea name="drug_description" rows="6" class="form-control"><?php echo $row_searchDrug['drug_description']; ?></textarea>
+															</div>
+															<div class="form-group">
+																<label for="drug_doses">Doses</label>
+																<input value="<?php echo $row_searchDrug['drug_doses']; ?>" type="text" class="form-control" id="drug_doses" placeholder="Enter Drugs Quantity" name="drug_doses" min="0">
+															</div>
+															<div style="display: flex; justify-content: space-evenly;">
+																<div class="form-group" style="width: 50%">
+																	<label for="blood">Received Date</label>
+																	<input value="<?php echo $row_searchDrug['drug_date_receive']; ?>" name="drug_receive_date" type="date" max="<?php echo $date; ?>" class="form-control" id="recDate" placeholder="Receive Date">
+																</div>
+																<div class="form-group" style="width: 50%; margin-left: 10px;">
+																	<label for="nationality">Expired Date</label>
+																	<input value="<?php echo $row_searchDrug['drug_expiry_date']; ?>" name="drug_expired_date" type="date" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Expired Date">
+																</div>
+															</div>
+															<div class="form-group">
+																<label for="quantity">Quantity</label>
+																<input value="<?php echo $row_searchDrug['drug_quantity']; ?>" type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+															<button name="update_drug$m" type="submit" class="btn btn-success">Save Drug</button>
+
+														</div>
+													</form>
 												</div>
-												<div class="form-group">
-													<label for="description">Description</label>
-													<textarea class="form-control" cols="6"></textarea>
-												</div>
-												<div class="form-group">
-													<label for="recDate">Received Date</label>
-													<input type="date" class="form-control" id="recDate" placeholder="Enter Quantty" name="recDate" >
-												</div>
-												<div class="form-group">
-													<label for="expDate">Expired Date</label>
-													<input type="date" class="form-control" id="expDate" placeholder="Enter Quantty" name="expDate" >
-												</div>
-												<div class="form-group">
-													<label for="quantity">Quantity</label>
-													<input type="number" class="form-control" id="name" placeholder="Enter Quantty" name="quantity">
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-												<button type="submit" class="btn btn-success">Save Drug</button>
-												</form>
 											</div>
 										</div>
-									</div>
-								</div>
-									<!-- end editdrug modal -->
+										<!-- end editdrug modal -->
 
-
+								<?php
+										$m++;
+									}
+								}
+								?>
 							</tbody>
 						</table>
 

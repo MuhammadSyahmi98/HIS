@@ -46,7 +46,7 @@ if (isset($_GET['doctor'])) {
 							<tbody>
 								<?php
 								// Check status
-								$sql_patientQueue1 = "SELECT * FROM patient_queue INNER JOIN patient_information WHERE patient_information.patient_PMI = patient_queue.patient_PMI AND  queue_status = 'waiting' ORDER BY queue_time ASC";
+								$sql_patientQueue1 = "SELECT * FROM patient_queue INNER JOIN patient_information WHERE patient_information.patient_PMI = patient_queue.patient_PMI AND  queue_status != 'complete' ORDER BY queue_time ASC";
 
 								$result_patientQueue1 = mysqli_query($conn, $sql_patientQueue1);
 
@@ -64,7 +64,7 @@ if (isset($_GET['doctor'])) {
 									<td><?php echo $row_patientQueue1['queue_time']. ' '. $row_patientQueue1['queue_date'] ?></td>
 									<td>
 										<center>
-											<a href="?treatpatient&id=<?php echo $row_patientQueue1['patient_PMI']?>" class="btn btn-primary sign-up-btn" style="width: 100%">Treat Patient<span style="margin-left: 10px;"><i class="fas fa-angle-double-right"></i></span></a>
+											<a href="?treatpatient&id=<?php echo $row_patientQueue1['patient_PMI']?>&queue_id=<?php echo $row_patientQueue1['queue_id'] ?>" class="btn btn-primary sign-up-btn" style="width: 100%">Treat Patient<span style="margin-left: 10px;"><i class="fas fa-angle-double-right"></i></span></a>
 										</center>
 									</td>
 								</tr>

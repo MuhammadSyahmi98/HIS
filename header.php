@@ -20,6 +20,7 @@
                 // Success
                 $row = $result->fetch_assoc();
                 $_SESSION['staff_id'] = $row['staff_id'];
+                $_SESSION['list_medicine'] = array(); 
                 header('location: staff/');
             } else {
                 // Wrong credential
