@@ -64,6 +64,84 @@
 			</div>	
 		</div>
 
+		<!-- cpoe modal -->
+			<div class="modal fade" id="cpoe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+				    <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">CPOE Details</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+			        <div class="modal-body">
+				        <div class="form-group">
+				          <center>
+				            <label for="name">Status</label>
+				            <input type="text" class="form-control" id="name" name="name">
+				          </center>
+				        </div>
+				        <hr>
+				        <div>
+				          <div class="form-group">
+				              <label for="name">Name</label>
+				              <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" disabled>
+				            </div>
+				          <div style="display: flex; justify-content: space-evenly;">
+				            <div class="form-group" style="width: 50%;">
+				              <label for="icnumber">IC Number</label>
+				              <input type="number" class="form-control" id="name" placeholder="Enter IC Number" name="icnumber" disabled>
+				            </div>
+				            <div class="form-group" style="width: 50%; margin-left: 10px;">
+				              <label for="dob">Date Of Birth</label>
+				              <input type="date" class="form-control" id="dob" name="dob" disabled>
+				            </div>
+				            <div class="form-group" style="width: 50%; margin-left: 10px;">
+				              <label for="blood">Blood Type</label>
+				              <input type="date" class="form-control" id="blood" name="blood" disabled>
+				            </div>
+				          </div>
+				          <div style="display: flex; justify-content: space-evenly;">
+				            <div class="form-group" style="width: 50%">
+				              <label for="email">Email</label>
+				              <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" disabled>
+				            </div>
+				            <div class="form-group" style="width: 50%; margin-left: 10px;">
+				              <label for="phonenumber">Phone Number</label>
+				              <input type="number" class="form-control" id="phonenumber" placeholder="Enter Phone Number" name="phonenumber" disabled>
+				            </div>
+				          </div>
+				        </div>
+
+				        <hr>
+				        <label><b>CPOE Details</b></label>
+				        <div>
+				          <table class="table table-striped">
+				            <tr>
+				              <td>Name</td>
+				              <td>Doses</td>
+				              <td>Quantity</td>
+				              <td>Usage</td>
+				            </tr>
+				            <tr>
+				              <td></td>
+				              <td></td>
+				              <td></td>
+				              <td></td>
+				            </tr>
+				          </table>
+				        </div>
+			    	</div>
+			    		<div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type="submit" class="btn btn-success" >CPOE Ready</button>
+				        </form>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<!-- end cpoe modal -->
+
 		<?php
 	}
 

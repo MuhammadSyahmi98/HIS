@@ -1,5 +1,17 @@
 <?php
-	if(isset($_GET['treatpatient'])) {
+	if(isset($_GET['treatpatient']) && isset($_GET['id'])) {
+		$patient_PMI = $_GET['id'];
+		
+		$sql_patientQueue2 = "SELECT * FROM patient_information WHERE patient_PMI = ". $patient_PMI ."";
+
+		$result_patientQueue2 = mysqli_query($conn, $sql_patientQueue2);
+
+		if($result_patientQueue2->num_rows>0){
+			$row_patientQueue2 = $result_patientQueue2->fetch_assoc();
+		}
+
+
+
 		?>
 		<div class="pageSize" style="display: flex; margin-top: 50px;" >
 			<div>
@@ -25,7 +37,7 @@
 					<div>
 			            <div>
 			                <div>
-			                    <center><h2>Luhman Musa Bin Abdul Mutalip</h2></center>
+			                    <center><h2><?php echo $row_patientQueue2['patient_name'] ?></h2></center>
 			                </div>
 			            </div>
 			            <br>

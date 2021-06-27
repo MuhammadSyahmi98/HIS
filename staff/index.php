@@ -7,11 +7,10 @@ $staff_id = $_SESSION['staff_id'];
 
 ?>
 
-
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" lang="EN">
+	<meta charset="utf-8">
 	<title>Staff</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
@@ -56,6 +55,25 @@ $staff_id = $_SESSION['staff_id'];
 		  margin-left: 5%;
 		  margin-right: 5%;
 		}
+		@media screen {
+		  #printSection {
+		      display: none;
+		  }
+		}
+
+		@media print {
+		  body * {
+		    visibility:hidden;
+		  }
+		  #printSection, #printSection * {
+		    visibility:visible;
+		  }
+		  #printSection {
+		    position:absolute;
+		    left:0;
+		    top:0;
+		  }
+		}
 	</style>
 </head>
 <body>
@@ -72,6 +90,7 @@ $staff_id = $_SESSION['staff_id'];
 	<?php include('adddrug.php') ?>
 	<?php include('billing.php') ?>
 	<?php include('profile.php') ?>
+	<?php include('payment.php') ?>
 
 
 
@@ -79,7 +98,44 @@ $staff_id = $_SESSION['staff_id'];
 
 
 	<script type="text/javascript">
-		
+		// printing
+		document.getElementById("btnPrint").onclick = function () {
+		    printElement(document.getElementById("printThis"));
+		}
+
+		function printElement(elem) {
+		    var domClone = elem.cloneNode(true);
+		    
+		    var $printSection = document.getElementById("printSection");
+		    
+		    if (!$printSection) {
+		        var $printSection = document.createElement("div");
+		        $printSection.id = "printSection";
+		        document.body.appendChild($printSection);
+		    }
+		    
+		    $printSection.innerHTML = "";
+		    $printSection.appendChild(domClone);
+		    window.print();
+		}
+
+		// payment type
+		$(document).ready(function(){
+		    $('#payment').on('change', function() {
+		      if ( this.value == '1')
+		      {
+		        $("#cash").show();
+		        $("#insurance").hide();
+		      }
+		      else
+		      {
+		        $("#insurance").show();
+		        $("#cash").hide();
+		      }
+		    });
+		});
+
+		//add prescription
 		function addInput(divName){
 		   var refEl = document.getElementById(divName);// refEl can be anything ex: document.body
 
@@ -90,6 +146,7 @@ $staff_id = $_SESSION['staff_id'];
 		   refEl.parentNode.insertBefore(clone, refEl.nextSibling);
 		}
 		
+		// pagination
 		$(document).ready(function() {
 		    $('#patientlist').DataTable( {
 		        "pagingType": "full_numbers"

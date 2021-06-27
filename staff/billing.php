@@ -61,7 +61,7 @@
 					                <td>RM 25.00</td>
 					                <td>
 					                	<center>
-						                	<button class="btn btn-primary">Pay</button> 
+						                	<a href="?payment" class="btn btn-success">Pay</a>
 				                        </center>
 					                </td>
 					            </tr>
@@ -101,7 +101,7 @@
 					                <td>RM 25.00</td>
 					                <td>
 					                	<center>
-						                	<button class="btn btn-success">Check Out</button> 
+						                	<a href="?payment" class="btn btn-success">Check Out</a> 
 				                        </center>
 					                </td>
 					            </tr>
@@ -141,20 +141,131 @@
 					                <td>25/6/2021</td>
 					                <td>CASH/INSURANCE</td>
 					                <td>RM 25.00</td>
-					                <td><center><a href="#"><i style="color: dodgerblue; font-size: 20px;" class="far fa-eye"></center></td>
+					                <td>
+					                	<center>
+					                		<button class="btn btn-primary sign-up-btn" style="width: 100%" data-toggle="modal" data-target="#printbill">
+					                			View<span style="margin-left: 10px;"><i class="fas fa-angle-double-right"></i></span>
+					                		</button>
+					                	</center>
+					                </td>
 					            </tr>
 					        </tbody>
 				    	</table>
 					  </div>
 					<!-- end history div -->
 					</div>
-
 				</div>
 			</div>
-			
-			
 		</div>
 
+		<!-- MODAL SECTION -->
+
+		<!-- print modal -->
+		<div class="modal fade" id="printbill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">View Patient Information</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	<div id="printThis">
+	                <div>
+	                	<center><h4>Patient Details</h4></center>
+	                </div>
+	                <div>
+			          <div class="form-group">
+			              <label for="name">Name</label>
+			              <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" disabled>
+			            </div>
+			          <div style="display: flex; justify-content: space-evenly;">
+			            <div class="form-group" style="width: 50%;">
+			              <label for="icnumber">IC Number</label>
+			              <input type="number" class="form-control" id="name" placeholder="Enter IC Number" name="icnumber" disabled>
+			            </div>
+			            <div class="form-group" style="width: 50%; margin-left: 10px;">
+			              <label for="dob">Date Of Birth</label>
+			              <input type="date" class="form-control" id="dob" name="dob" disabled>
+			            </div>
+			            <div class="form-group" style="width: 50%; margin-left: 10px;">
+			              <label for="blood">Blood Type</label>
+			              <input type="date" class="form-control" id="blood" name="blood" disabled>
+			            </div>
+			          </div>
+			          <div style="display: flex; justify-content: space-evenly;">
+			            <div class="form-group" style="width: 50%">
+			              <label for="email">Email</label>
+			              <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" disabled>
+			            </div>
+			            <div class="form-group" style="width: 50%; margin-left: 10px;">
+			              <label for="phonenumber">Phone Number</label>
+			              <input type="number" class="form-control" id="phonenumber" placeholder="Enter Phone Number" name="phonenumber" disabled>
+			            </div>
+			          </div>
+			        </div>
+			        <hr>
+			        <div>
+	                	<center><h4>Billing Details</h4></center>
+	                </div>
+	                <br>
+	                <div>
+	                	<div>
+	                		<label>Date : <span style="margin-left: 10px; font-weight: bold;">24/7/2021 1525 hours</span></label>
+	                	</div>
+	                	<br>
+	                	<table class="table table-bordered">
+	                		<thead class="thead-dark">
+		                		<tr>
+		                			<th colspan="4" scope="col">Prescription</th>
+		                		</tr>
+	                		</thead>
+	                		<tr class="table-activet">
+	                			<td>Name</td>
+	                			<td>Price/Quantity</td>
+	                			<td>Quantity</td>
+	                			<td>Price</td>
+	                		</tr>
+	                		<thead class="thead-dark">
+		                		<tr>
+		                			<th colspan="4" scope="col">Ward</th>
+		                		</tr>
+	                		</thead>
+	                		<tr class="table-activet">
+	                			<td>Name</td>
+	                			<td>Price/Quantity</td>
+	                			<td>Quantity</td>
+	                			<td>Price</td>
+	                		</tr>
+	                		<tr>
+	                			<td colspan="3">Total Price</td>
+	                			<td>RM 55.00</td>
+	                		</tr>
+	                	</table>
+	                </div>
+	                <hr>
+	                <div>
+	                	<center><h4>Payment Method</h4></center>
+	                </div>
+	                <br>
+	                <div>
+	                	<select class="form-control" id="payment">
+	                		<option selected="select" disabled="disable">--Please Select Payment Method--</option>
+	                		<option value="1">Cash</option>
+	                		<option value="2">Insurance</option>
+	                	</select>
+	                </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button id="btnPrint" type="button" class="btn btn-primary">Print</button>
+			      </div>
+		  		</div>
+		    </div>
+		  </div>
+		</div>
+		<!-- end print modal -->
 		<?php
 	}
 

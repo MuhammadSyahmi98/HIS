@@ -80,6 +80,14 @@ if (isset($_GET['drugs'])) {
 													<textarea class="form-control" cols="6" disabled></textarea>
 												</div>
 												<div class="form-group">
+													<label for="recDate">Received Date</label>
+													<input type="date" class="form-control" id="recDate" placeholder="Enter Quantty" name="recDate" disabled>
+												</div>
+												<div class="form-group">
+													<label for="expDate">Expired Date</label>
+													<input type="date" class="form-control" id="expDate" placeholder="Enter Quantty" name="expDate" disabled>
+												</div>
+												<div class="form-group">
 													<label for="quantity">Quantity</label>
 													<input type="number" class="form-control" id="name" placeholder="Enter Quantty" name="quantity" disabled>
 												</div>
@@ -110,6 +118,14 @@ if (isset($_GET['drugs'])) {
 												<div class="form-group">
 													<label for="description">Description</label>
 													<textarea class="form-control" cols="6"></textarea>
+												</div>
+												<div class="form-group">
+													<label for="recDate">Received Date</label>
+													<input type="date" class="form-control" id="recDate" placeholder="Enter Quantty" name="recDate" >
+												</div>
+												<div class="form-group">
+													<label for="expDate">Expired Date</label>
+													<input type="date" class="form-control" id="expDate" placeholder="Enter Quantty" name="expDate" >
 												</div>
 												<div class="form-group">
 													<label for="quantity">Quantity</label>
