@@ -100,6 +100,7 @@ $staff_id = $_SESSION['staff_id'];
 	<?php include('billing.php') ?>
 	<?php include('profile.php') ?>
 	<?php include('payment.php') ?>
+	<?php include('paymentward.php') ?>
 
 
 
@@ -155,18 +156,7 @@ $staff_id = $_SESSION['staff_id'];
 			window.print();
 		}
 
-		// payment type
-		$(document).ready(function() {
-			$('#payment').on('change', function() {
-				if (this.value == '1') {
-					$("#cash").show();
-					$("#insurance").hide();
-				} else {
-					$("#insurance").show();
-					$("#cash").hide();
-				}
-			});
-		});
+		
 
 		//add prescription
 		function addInput(divName) {

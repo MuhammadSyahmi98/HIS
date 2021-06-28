@@ -189,7 +189,7 @@ if (isset($_GET['treatpatient']) && isset($_GET['id'])) {
 								<option <?php if (empty($ward_status)) {
 											echo "selected";
 										} ?> disabled="disable">-- Please Choose --</option>
-								<option value="YES" <?php if ($ward_status === 'Yes') {
+								<option value="Yes" <?php if ($ward_status === 'Yes') {
 														echo 'selected';
 													} ?>>Yes</option>
 								<option value="No" <?php if ($ward_status === 'No') {
