@@ -7,7 +7,7 @@ if (isset($_GET['billing'])) {
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?patient"><i class="fas fa-user-injured"></i><span style="margin-left: 10px;">Patient</span></a>
-				
+
 				<a href="?billing" class="active1"><i class="fas fa-money-bill-alt"></i></i><span style="margin-left: 10px;">Billing</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?profile"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
@@ -117,6 +117,7 @@ if (isset($_GET['billing'])) {
 						<br>
 						<table id="wardedlist" class="display" style="width:100%">
 							<thead>
+
 								<tr>
 									<th width="5%">#</th>
 									<th width="25%">Name</th>
@@ -126,21 +127,66 @@ if (isset($_GET['billing'])) {
 									<th width="15%">Bill</th>
 									<th width="10%">Action</th>
 								</tr>
+
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Luhman Musa Pawer</td>
-									<td>991015081232</td>
-									<td>24/6/2021</td>
-									<td>Warded</td>
-									<td>RM 25.00</td>
-									<td>
-										<center>
-											<a href="?paymentward" class="btn btn-success">Check Out</a>
-										</center>
-									</td>
-								</tr>
+								<?php
+								$sql_bill1 = "SELECT * FROM medical_history INNER JOIN patient_information WHERE medical_history.patient_PMI = patient_information.patient_PMI AND payment_status = 'in process' AND history_ward = 'Yes'";
+								$result_bill1 = mysqli_query($conn, $sql_bill1);
+
+								if ($result_bill1->num_rows > 0) {
+									$re = 1;
+									while ($row_bill1 = $result_bill1->fetch_assoc()) {
+								?>
+										<tr>
+											<td><?php echo $re; ?></td>
+											<td><?php echo $row_bill1['patient_name']; ?></td>
+											<td><?php echo $row_bill1['patient_ic_number']; ?></td>
+											<td><?php echo $row_bill1['start_warded']; ?></td>
+											<td>Warded</td>
+											<!-- Calculate total price -->
+											<?php
+											$history_id = $row_bill1['history_id'];
+
+											$start_warded = strtotime($row_bill1['start_warded']);
+											$end_date = strtotime(date('Y-m-d'));
+
+											$totalNight = abs($end_date - $start_warded);
+
+											$totalNight = $totalNight / 86400;  // 86400 seconds in one day
+
+											// and you might want to convert to integer
+											$numberNights = intval($totalNight);
+
+											$sql_totalPrice = "SELECT * FROM drug_history INNER JOIN drug_information WHERE drug_history.drug_code = drug_information.drug_code AND history_id = " . $history_id . "";
+											$result_totalPrice = mysqli_query($conn, $sql_totalPrice);
+											if ($result_totalPrice->num_rows > 0) {
+												$totalPrice = 0;
+												while ($row_totalPrice = $result_totalPrice->fetch_assoc()) {
+													$subtotal = $row_totalPrice['drug_price'] * $row_totalPrice['drug_history_quantity'];
+													$totalPrice += $subtotal;
+												}
+											}
+
+											$subTotalWard = $numberNights * 122;
+
+											$totalPrice += $subTotalWard;
+
+
+											?>
+
+											<td>RM <?php echo $totalPrice; ?></td>
+											<td>
+												<center>
+													<a href="?paymentward&id=<?php echo $row_bill1['history_id']; ?>" class="btn btn-success">Check Out</a>
+												</center>
+											</td>
+										</tr>
+								<?php
+										$re++;
+									}
+								}
+								?>
 							</tbody>
 						</table>
 					</div>
@@ -164,6 +210,7 @@ if (isset($_GET['billing'])) {
 									<th>Name</th>
 									<th>IC Number</th>
 									<th>Status</th>
+									<th>Warded</th>
 									<th>Bill</th>
 									<th>Date</th>
 									<th>Action</th>
@@ -180,16 +227,17 @@ if (isset($_GET['billing'])) {
 
 								?>
 										<tr>
-											<td><?php echo $we;?></td>
-											<td><?php echo $row_complete['patient_name'];?></td>
-											<td><?php echo $row_complete['patient_ic_number'];?></td>
-											<td style="text-transform: capitalize;"><?php echo $row_complete['payment_method'];?></td>
-											<td>RM <?php echo $row_complete['payment_total'];?></td>
-											<td><?php echo $row_complete['payment_date'];?></td>
+											<td><?php echo $we; ?></td>
+											<td><?php echo $row_complete['patient_name']; ?></td>
+											<td><?php echo $row_complete['patient_ic_number']; ?></td>
+											<td style="text-transform: capitalize;"><?php echo $row_complete['payment_method']; ?></td>
+											<td style="text-transform: capitalize;"><?php echo $row_complete['history_ward']; ?></td>
+											<td>RM <?php echo $row_complete['payment_total']; ?></td>
+											<td><?php echo $row_complete['payment_date']; ?></td>
 											<td>
-												
+
 												<center>
-													<a href="?viewpayment&id=<?php echo $row_complete['history_id']; ?>" class="btn btn-primary sign-up-btn">View <i class="fas fa-angle-double-right"></i></a>
+													<a href="?<?php if($row_complete['history_ward']==='No'){echo "viewpayment";}else {echo "viewpaymentward";} ?>&id=<?php echo $row_complete['history_id']; ?>" class="btn btn-primary sign-up-btn">View <i class="fas fa-angle-double-right"></i></a>
 												</center>
 											</td>
 										</tr>

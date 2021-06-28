@@ -7,17 +7,19 @@ if (isset($_POST['add'])) {
 
 	$staff_name = $_POST['staff_name'];
 	$staff_email = $_POST['staff_email'];
-	$staff_phone = $_POST['staff_phone'];
+	$staff_phone = $_POST['staff_phone_number'];
 	$staff_DOB = $_POST['staff_DOB'];
-	$staff_ic = $_POST['staff_ic'];
+	$staff_ic = $_POST['staff_ic_number'];
 	$staff_sex = $_POST['staff_sex'];
 	$staff_race = $_POST['staff_race'];
 	$staff_nationality = $_POST['staff_nationality'];
 	$staff_address = $_POST['staff_address'];
+	$staff_type = $_POST['staff_type'];
 
 	//login staff
 	$staff_username = $_POST['staff_username'];
 	$staff_password = $_POST['password'];
+	$staff_repassword = $_POST['repassword'];
 
 
 
@@ -28,14 +30,14 @@ if (isset($_POST['add'])) {
 
 	if (true) {
 		// Insert patient
-		$stmt = $conn->prepare("INSERT INTO staff (staff_name, staff_email, staff_phone, staff_dob, staff_ic, staff_sex, staff_race, staff_address, staff_nationality, staff_username, staff_password, staff_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("sssssssssssi", $staff_name, $staff_email, $staff_phone, $staff_DOB, $staff_ic, $staff_sex, $staff_race, $staff_address, $staff_nationality, $staff_username, $staff_password, 5);
+		$stmt = $conn->prepare("INSERT INTO staff (staff_name, staff_email, staff_phone_number, staff_BOD, staff_ic_number, staff_sex, staff_race, staff_address, staff_nationality, staff_username, staff_password, staff_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("sssssssssssi", $staff_name, $staff_email, $staff_phone, $staff_DOB, $staff_ic, $staff_sex, $staff_race, $staff_address, $staff_nationality, $staff_username, $staff_password, $staff_type);
 		$stmt->execute();
 
 		echo "<script>alert('Success add staff');
 				window.location.href='?staffmanagement';
 				</script>";
-		// echo $stmt->error;
+	
 	}
 }
 
@@ -47,7 +49,7 @@ if (isset($_POST['add'])) {
 
 if (isset($_GET['addstaff'])) {
 ?>
-	<div class="pageSize" style="display: flex; margin-top: 50px;">
+	<div class="pageSize" style="display: flex; margin-top: 50px; margin-bottom: 4%;">
 		<div>
 			<div class="sidebar">
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
@@ -81,7 +83,7 @@ if (isset($_GET['addstaff'])) {
 						</div>
 						<div class="form-group" style="width: 50%; margin-left: 10px;">
 							<label for="phonenumber">Phone Number</label>
-							<input name="staff_phone" type="number" class="form-control" id="phonenumber" placeholder="Enter Phone Number" required>
+							<input name="staff_phone_number" type="number" class="form-control" id="phonenumber" placeholder="Enter Phone Number" required>
 						</div>
 					</div>
 					<div style="display: flex; justify-content: space-evenly;">
@@ -91,7 +93,7 @@ if (isset($_GET['addstaff'])) {
 						</div>
 						<div class="form-group" style="width: 50%; margin-left: 10px;">
 							<label for="icnumber">IC Number</label>
-							<input name="staff_ic" type="number" class="form-control" id="name" placeholder="Enter IC Number" required>
+							<input name="staff_ic_number" type="number" class="form-control" id="name" placeholder="Enter IC Number" required>
 						</div>
 					</div>
 					<div style="display: flex; justify-content: space-evenly;">
@@ -104,9 +106,21 @@ if (isset($_GET['addstaff'])) {
 							<input name="staff_race" type="text" class="form-control" id="race" placeholder="Enter race" required>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="nationality">Nationality</label>
-						<input name="staff_nationality" type="text" class="form-control" id="nationality" placeholder="Enter Nationality" required>
+					<div style="display: flex; justify-content: space-evenly;">
+						<div class="form-group" style="width: 50%">
+							<label for="nationality">Nationality</label>
+							<input type="text" class="form-control" id="nationality" placeholder="Enter Nationality" name="staff_nationality">
+						</div>
+						<div class="form-group" style="width: 50%; margin-left: 10px;">
+							<label for="type">Type</label>
+							<select class="form-control" name="staff_type">
+								<option selected="select" disabled="disable">--Please Select Payment Method--</option>
+								<option value="0">Admin</option>
+								<option value="1">Doctor</option>
+								<option value="2">Pharmacist</option>
+								<option value="3">Receptionist</option>
+							</select>
+						</div>
 					</div>
 					<div class="form-group">
 						<label for="address">Address</label>

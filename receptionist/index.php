@@ -99,6 +99,7 @@ $staff_id = $_SESSION['staff_id'];
 	<?php include('payment.php') ?>
 	<?php include('paymentward.php') ?>
 	<?php include('viewpayment.php') ?>
+	<?php include('viewpaymentward.php') ?>
 
 
 

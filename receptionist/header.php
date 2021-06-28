@@ -21,7 +21,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="?profile">Profile</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="?logout">Logout</a>
+                  <a class="dropdown-item" href="../logout.php">Logout</a>
                 </div>
             </div>
         </div>

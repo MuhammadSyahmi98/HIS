@@ -40,48 +40,95 @@ if (isset($_POST['complete'])) {
 	 * !Get history_id for next process
 	 */
 
-	$stmt = $conn->prepare("INSERT INTO medical_history (history_date, history_time, history_review, history_ward, patient_PMI, staff_id) VALUES (?, ?, ?, ?, ?, ?)");
-	$stmt->bind_param("ssssii", $history_date, $history_time, $review, $ward_status, $patient_PMI, $staff_id);
+	if ($ward_status === 'No') {
+		$stmt = $conn->prepare("INSERT INTO medical_history (history_date, history_time, history_review, history_ward, patient_PMI, staff_id) VALUES (?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("ssssii", $history_date, $history_time, $review, $ward_status, $patient_PMI, $staff_id);
 
-	if ($stmt->execute()) {
+		if ($stmt->execute()) {
 
-		$sql_selectMedicalHistory = "SELECT * FROM medical_history WHERE history_date = '" . $history_date . "' AND history_time = '" . $history_time . "' AND history_review = '" . $review . "' AND history_ward = '" . $ward_status . "' AND patient_PMI = " . $patient_PMI . " AND staff_id = " . $staff_id . "";
-		$result_selectMedicalHistory = mysqli_query($conn, $sql_selectMedicalHistory);
+			$sql_selectMedicalHistory = "SELECT * FROM medical_history WHERE history_date = '" . $history_date . "' AND history_time = '" . $history_time . "' AND history_review = '" . $review . "' AND history_ward = '" . $ward_status . "' AND patient_PMI = " . $patient_PMI . " AND staff_id = " . $staff_id . "";
+			$result_selectMedicalHistory = mysqli_query($conn, $sql_selectMedicalHistory);
 
-		if ($result_selectMedicalHistory->num_rows > 0) {
-			$row_selectMedicalHistory = $result_selectMedicalHistory->fetch_assoc();
-			$history_id = $row_selectMedicalHistory['history_id'];
+			if ($result_selectMedicalHistory->num_rows > 0) {
+				$row_selectMedicalHistory = $result_selectMedicalHistory->fetch_assoc();
+				$history_id = $row_selectMedicalHistory['history_id'];
 
-			/**
-			 * TODO : Insert data for each array
-			 */
+				/**
+				 * TODO : Insert data for each array
+				 */
 
-			$count_array = count($array_list);
-			for ($mq = 0; $mq < $count_array; $mq++) {
-				$drug_code = $array_list[$mq][0];
-				$drug_quantity = $array_list[$mq][2];
-				$stmt = $conn->prepare("INSERT INTO drug_history (drug_history_quantity, drug_code, history_id) VALUES (?,?,?)");
-				$stmt->bind_param('iii', $drug_quantity, $drug_code, $history_id);
-				$stmt->execute();
-			}
+				$count_array = count($array_list);
+				for ($mq = 0; $mq < $count_array; $mq++) {
+					$drug_code = $array_list[$mq][0];
+					$drug_quantity = $array_list[$mq][2];
+					$stmt = $conn->prepare("INSERT INTO drug_history (drug_history_quantity, drug_code, history_id) VALUES (?,?,?)");
+					$stmt->bind_param('iii', $drug_quantity, $drug_code, $history_id);
+					$stmt->execute();
+				}
 
-			// Update queue status
-			$queue_id = $_GET['queue_id'];
+				// Update queue status
+				$queue_id = $_GET['queue_id'];
 
-			$sql_updateQueue1 = "UPDATE patient_queue SET queue_status = 'complete' WHERE queue_id = '" . $queue_id . "'";
+				$sql_updateQueue1 = "UPDATE patient_queue SET queue_status = 'complete' WHERE queue_id = '" . $queue_id . "'";
 
-			if ($conn->query($sql_updateQueue1) === TRUE) {
-				$_SESSION['list_medicine'] = array();
-				echo "<script>alert('Consultation compeleted')
+				if ($conn->query($sql_updateQueue1) === TRUE) {
+					$_SESSION['list_medicine'] = array();
+					echo "<script>alert('Consultation compeleted')
 			window.location.href='?doctor';</script>";
+				} else {
+					echo "Error updating record: " . $conn->error;
+				}
 			} else {
-				echo "Error updating record: " . $conn->error;
+				echo $conn->error;
 			}
 		} else {
-			echo $conn->error;
+			echo "<script>alert('Failed add medical history')</script>";
 		}
 	} else {
-		echo "<script>alert('Failed add medical history')</script>";
+		$current_date = date('Y-m-d');
+		$stmt = $conn->prepare("INSERT INTO medical_history (history_date, history_time, history_review, history_ward, start_warded, patient_PMI, staff_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("sssssii", $history_date, $history_time, $review, $ward_status, $current_date, $patient_PMI, $staff_id);
+
+		if ($stmt->execute()) {
+
+			$sql_selectMedicalHistory = "SELECT * FROM medical_history WHERE history_date = '" . $history_date . "' AND history_time = '" . $history_time . "' AND history_review = '" . $review . "' AND history_ward = '" . $ward_status . "' AND patient_PMI = " . $patient_PMI . " AND staff_id = " . $staff_id . "";
+			$result_selectMedicalHistory = mysqli_query($conn, $sql_selectMedicalHistory);
+
+			if ($result_selectMedicalHistory->num_rows > 0) {
+				$row_selectMedicalHistory = $result_selectMedicalHistory->fetch_assoc();
+				$history_id = $row_selectMedicalHistory['history_id'];
+
+				/**
+				 * TODO : Insert data for each array
+				 */
+
+				$count_array = count($array_list);
+				for ($mq = 0; $mq < $count_array; $mq++) {
+					$drug_code = $array_list[$mq][0];
+					$drug_quantity = $array_list[$mq][2];
+					$stmt = $conn->prepare("INSERT INTO drug_history (drug_history_quantity, drug_code, history_id) VALUES (?,?,?)");
+					$stmt->bind_param('iii', $drug_quantity, $drug_code, $history_id);
+					$stmt->execute();
+				}
+
+				// Update queue status
+				$queue_id = $_GET['queue_id'];
+
+				$sql_updateQueue1 = "UPDATE patient_queue SET queue_status = 'complete' WHERE queue_id = '" . $queue_id . "'";
+
+				if ($conn->query($sql_updateQueue1) === TRUE) {
+					$_SESSION['list_medicine'] = array();
+					echo "<script>alert('Consultation compeleted')
+			window.location.href='?doctor';</script>";
+				} else {
+					echo "Error updating record: " . $conn->error;
+				}
+			} else {
+				echo $conn->error;
+			}
+		} else {
+			echo "<script>alert('Failed add medical history')</script>";
+		}
 	}
 }
 
@@ -117,7 +164,7 @@ if (isset($_GET['treatpatient']) && isset($_GET['id'])) {
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<div class="pageSize" style="display: flex; margin-top: 50px;">
 		<div>
-		<div class="sidebar">
+			<div class="sidebar">
 				<a href="?dashboard" class="active1"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?doctor"><i class="fas fa-user-md"></i><span style="margin-left: 10px;">Doctor</span></a>

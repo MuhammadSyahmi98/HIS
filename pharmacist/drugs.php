@@ -94,7 +94,7 @@ if (isset($_GET['drugs'])) {
 
 												<span data-toggle="modal" data-target="#viewdrugs<?php echo $m ?>"><a href="#" class="view" title="View" data-toggle="tooltip"><i class="fas fa-eye"></i></a></span>
 												<span data-toggle="modal" data-target="#editdrugs<?php echo $m ?>"><a href="#" class="view" title="View" data-toggle="tooltip"><i style="color: orange;" class="fas fa-edit"></i></a></span>
-												<span><a onclick="return confirm('Are you sure you want to delete this patient?');" href="#" class="view" title="View" data-toggle="tooltip"><i style="color: red;" class="fas fa-trash"></i></a></span>
+												
 
 											</td>
 										</tr>

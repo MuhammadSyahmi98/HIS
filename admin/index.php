@@ -1,6 +1,8 @@
 <?php
-
+session_start();
 require "../src/backend/conn.php";
+
+$staff_id = $_SESSION['staff_id'];
 
 ?>
 

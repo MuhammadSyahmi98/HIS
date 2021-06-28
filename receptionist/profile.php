@@ -50,7 +50,7 @@ if (isset($_GET['profile'])) {
 						</tr>
 						<tr>
 							<th scope="row">Role</th>
-							<td><?php echo $row_staff['staff_type']; ?></td>
+							<td>Receptionist</td>
 						</tr>
 						
 					</table>
