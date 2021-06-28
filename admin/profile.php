@@ -7,6 +7,7 @@ if (isset($_GET['profile'])) {
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?staffmanagement"><i class="fas fa-users"></i><span style="margin-left: 10px;">Staff Management</span></a>
+				<a href="?report" class="active1"><i class="fas fa-users"></i><span style="margin-left: 10px;">Report</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?profile" class="active1"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
 			</div>

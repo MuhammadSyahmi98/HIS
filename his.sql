@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 28, 2021 at 09:42 AM
+-- Generation Time: Jun 28, 2021 at 01:29 PM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -161,28 +161,6 @@ INSERT INTO `medical_history` (`history_id`, `drug_status`, `payment_status`, `h
 -- --------------------------------------------------------
 
 --
--- Table structure for table `patient`
---
-
-CREATE TABLE `patient` (
-  `patient_id` int(11) NOT NULL,
-  `patient_name` varchar(80) NOT NULL,
-  `patient_username` varchar(40) NOT NULL,
-  `patient_phone_number` varchar(30) NOT NULL,
-  `patient_email` varchar(80) NOT NULL,
-  `patient_password` varchar(80) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `patient`
---
-
-INSERT INTO `patient` (`patient_id`, `patient_name`, `patient_username`, `patient_phone_number`, `patient_email`, `patient_password`) VALUES
-(1, 'Luhman Musa', 'luhman92', '019-6399925', 'syahmijalil12@gmail.com', '12345');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `patient_information`
 --
 
@@ -291,21 +269,6 @@ INSERT INTO `staff` (`staff_id`, `staff_name`, `staff_username`, `staff_phone_nu
 (4, 'powerr', 'powerr12', '0196534221', '2021-06-02', '600723323244', 'Male', 'Malay', 'Malaysia', 'No 13 Jalan TU 34', 'powerr@gamil.com', 'powerr12', 3),
 (5, 'Atan', 'atan12', '0196534223', '2021-06-02', '2344567875', 'Male', 'Malay', 'Malaysia', 'No 13 Jalan TU 34', 'atan@gmail.com', 'atan@12', 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `ward_information`
---
-
-CREATE TABLE `ward_information` (
-  `ward_id` int(11) NOT NULL,
-  `ward_name` varchar(80) NOT NULL,
-  `ward_level` varchar(30) NOT NULL,
-  `ward_type` varchar(80) NOT NULL,
-  `ward_capacity` varchar(30) NOT NULL,
-  `ward_bed_code` varchar(80) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Indexes for dumped tables
 --
@@ -335,7 +298,8 @@ ALTER TABLE `family_information`
 -- Indexes for table `insurance_information`
 --
 ALTER TABLE `insurance_information`
-  ADD PRIMARY KEY (`insurance_id`);
+  ADD PRIMARY KEY (`insurance_id`),
+  ADD KEY `patient_PMI` (`patient_PMI`);
 
 --
 -- Indexes for table `medical_history`
@@ -344,12 +308,6 @@ ALTER TABLE `medical_history`
   ADD PRIMARY KEY (`history_id`),
   ADD KEY `patient_PMI` (`patient_PMI`),
   ADD KEY `staff_id` (`staff_id`);
-
---
--- Indexes for table `patient`
---
-ALTER TABLE `patient`
-  ADD PRIMARY KEY (`patient_id`);
 
 --
 -- Indexes for table `patient_information`
@@ -376,12 +334,6 @@ ALTER TABLE `payment`
 --
 ALTER TABLE `staff`
   ADD PRIMARY KEY (`staff_id`);
-
---
--- Indexes for table `ward_information`
---
-ALTER TABLE `ward_information`
-  ADD PRIMARY KEY (`ward_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -418,12 +370,6 @@ ALTER TABLE `medical_history`
   MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `patient`
---
-ALTER TABLE `patient`
-  MODIFY `patient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `patient_information`
 --
 ALTER TABLE `patient_information`
@@ -448,12 +394,6 @@ ALTER TABLE `staff`
   MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `ward_information`
---
-ALTER TABLE `ward_information`
-  MODIFY `ward_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- Constraints for dumped tables
 --
 
@@ -469,6 +409,12 @@ ALTER TABLE `drug_history`
 --
 ALTER TABLE `family_information`
   ADD CONSTRAINT `family_information_ibfk_1` FOREIGN KEY (`patient_PMI`) REFERENCES `patient_information` (`patient_PMI`);
+
+--
+-- Constraints for table `insurance_information`
+--
+ALTER TABLE `insurance_information`
+  ADD CONSTRAINT `insurance_information_ibfk_1` FOREIGN KEY (`patient_PMI`) REFERENCES `patient_information` (`patient_PMI`);
 
 --
 -- Constraints for table `medical_history`
