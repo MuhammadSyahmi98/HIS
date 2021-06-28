@@ -88,18 +88,11 @@ $staff_id = $_SESSION['staff_id'];
 <body>
 
 	<?php include('header.php') ?>
-
 	<?php include('dashboard.php') ?>
-	<?php include('patient.php') ?>
-	<?php include('addpatient.php') ?>
 	<?php include('doctor.php') ?>
 	<?php include('treatpatient.php') ?>
-	<?php include('order.php') ?>
-	<?php include('drugs.php') ?>
-	<?php include('adddrug.php') ?>
-	<?php include('billing.php') ?>
 	<?php include('profile.php') ?>
-	<?php include('payment.php') ?>
+
 
 
 
@@ -155,18 +148,7 @@ $staff_id = $_SESSION['staff_id'];
 			window.print();
 		}
 
-		// payment type
-		$(document).ready(function() {
-			$('#payment').on('change', function() {
-				if (this.value == '1') {
-					$("#cash").show();
-					$("#insurance").hide();
-				} else {
-					$("#insurance").show();
-					$("#cash").hide();
-				}
-			});
-		});
+		
 
 		//add prescription
 		function addInput(divName) {

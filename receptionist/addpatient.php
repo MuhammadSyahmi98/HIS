@@ -43,26 +43,28 @@ if (isset($_POST['add'])) {
 
 	if (true) {
 		// Insert patient
-		$stmt = $conn->prepare("INSERT INTO patient_information (patient_name, patient_email, patient_BOD, patient_ic_number, patient_sex, patient_race, patient_blood_type, patient_address, patient_nationality) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("sssssssss", $patient_name, $patient_email, $patient_BOD, $patient_ic_number, $patient_sex, $patient_race, $patient_blood_type, $patient_address, $patient_nationality);
-		$stmt->execute();
+		$stmt = $conn->prepare("INSERT INTO patient_information (patient_name, patient_email, patient_BOD, patient_ic_number, patient_sex, patient_race, patient_blood_type, patient_address, patient_nationality, patient_phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+		$stmt->bind_param("ssssssssss", $patient_name, $patient_email, $patient_BOD, $patient_ic_number, $patient_sex, $patient_race, $patient_blood_type, $patient_address, $patient_nationality, $patient_phone_number);
+		// ;
 		// echo $stmt->error;
 
-		if ($stmt === true) {
+		if ($stmt->execute()) {
 			// Search user to get id
-			$sql = "SELECT * FROM patient_information WHERE patient_ic_number = '" . $patient_ic_number . "'";
+			$sql11 = "SELECT * FROM patient_information WHERE patient_ic_number = '3456786543'";
 
-			$result = mysqli_query($conn, $sql);
+			$result11 = mysqli_query($conn, $sql11);
 
-			if ($result->num_rows > 0) {
-				$row = $result->fetch_assoc();
-				$patient_id = $row['patient_id'];
+			if ($result11->num_rows > 0) {
+				$row = $result11->fetch_assoc();
+				echo $patient_id = $row['patient_PMI'];
 
 				// Insert family
 				$stmt = $conn->prepare("INSERT INTO family_information (family_name, family_phone_number, family_ic_number, family_sex, family_race, family_blood_type, family_address, family_email, family_nationality, patient_PMI) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				$stmt->bind_param("sssssssssi", $family_name, $family_phone_number, $family_ic_number, $family_sex, $family_race, $family_blood_type, $family_address, $family_email, $family_nationality, $patient_id);
 
 				$stmt->execute();
+
+				
 
 				// Insert insurance
 				$stmt = $conn->prepare("INSERT INTO insurance_information (insurance_name, insurance_status, patient_PMI) VALUES (?, ?, ?)");
@@ -75,6 +77,8 @@ if (isset($_POST['add'])) {
 				window.location.href='?patient';
 				</script>";
 			}
+		} else {
+			echo $conn->error;
 		}
 	}
 }
@@ -93,9 +97,7 @@ if (isset($_GET['addpatient'])) {
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?patient" class="active"><i class="fas fa-user-injured"></i><span style="margin-left: 10px;">Patient</span></a>
-				<a href="?doctor"><i class="fas fa-user-md"></i><span style="margin-left: 10px;">Doctor</span></a>
-				<a href="?order"><i class="fas fa-list-alt"></i><span style="margin-left: 10px;">Order</span></a>
-				<a href="?drugs"><i class="fas fa-capsules"></i><span style="margin-left: 10px;">Drugs</span></a>
+				
 				<a href="?billing"><i class="fas fa-money-bill-alt"></i></i><span style="margin-left: 10px;">Billing</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?profile"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>

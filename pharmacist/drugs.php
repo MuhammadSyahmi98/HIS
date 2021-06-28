@@ -1,5 +1,5 @@
 <?php
-if(isset($_POST['update_drug$m'])){
+if (isset($_POST['update_drug$m'])) {
 	$drug_id = $_POST['drug_id'];
 	$drug_name = $_POST['drug_name'];
 	$drug_description = $_POST['drug_description'];
@@ -7,15 +7,15 @@ if(isset($_POST['update_drug$m'])){
 	$drug_receive_date = $_POST['drug_receive_date'];
 	$drug_expired_date = $_POST['drug_expired_date'];
 	$drug_quantity = $_POST['drug_quantity'];
+	$drug_price = $_POST['drug_price'];
 
+	$sql = "UPDATE drug_information SET drug_name = '" . $drug_name . "', drug_description = '" . $drug_description . "', drug_doses = '" . $drug_doses . "', drug_date_receive = '" . $drug_receive_date . "', drug_expiry_date = '" . $drug_expired_date . "', drug_quantity = ' " . $drug_quantity . "', drug_price = '".$drug_price."' WHERE drug_code = " . $drug_id . "";
 
-	$sql = "UPDATE drug_information SET drug_name = '" . $drug_name . "', drug_description = '" . $drug_description . "', drug_doses = '" . $drug_doses . "', drug_date_receive = '" . $drug_receive_date . "', drug_expiry_date = '" . $drug_expired_date . "', drug_quantity = ' " . $drug_quantity . "' WHERE drug_code = " . $drug_id . "";
-
-	if (mysqli_query($conn, $sql)) { 
+	if (mysqli_query($conn, $sql)) {
 		echo "<script>alert('Success update drug')
 		window.location.href='?drugs';
 		</script>";
-	} else{
+	} else {
 		echo "<script>alert('Failed update drug')
 		window.location.href='?drugs';
 		</script>";
@@ -30,11 +30,10 @@ if (isset($_GET['drugs'])) {
 			<div class="sidebar">
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
-				<a href="?patient"><i class="fas fa-user-injured"></i><span style="margin-left: 10px;">Patient</span></a>
-				<a href="?doctor"><i class="fas fa-user-md"></i><span style="margin-left: 10px;">Doctor</span></a>
+				
 				<a href="?order"><i class="fas fa-list-alt"></i><span style="margin-left: 10px;">Order</span></a>
 				<a href="?drugs" class="active1"><i class="fas fa-capsules"></i><span style="margin-left: 10px;">Drugs</span></a>
-				<a href="?billing"><i class="fas fa-money-bill-alt"></i></i><span style="margin-left: 10px;">Billing</span></a>
+				
 				<div class="dropdown-divider"></div>
 				<a href="?profile"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
 			</div>
@@ -95,7 +94,7 @@ if (isset($_GET['drugs'])) {
 
 												<span data-toggle="modal" data-target="#viewdrugs<?php echo $m ?>"><a href="#" class="view" title="View" data-toggle="tooltip"><i class="fas fa-eye"></i></a></span>
 												<span data-toggle="modal" data-target="#editdrugs<?php echo $m ?>"><a href="#" class="view" title="View" data-toggle="tooltip"><i style="color: orange;" class="fas fa-edit"></i></a></span>
-												<span><a onclick="return confirm('Are you sure you want to delete this patient?');" href="#" class="view" title="View" data-toggle="tooltip"><i style="color: red;" class="fas fa-trash"></i></a></span>
+												
 
 											</td>
 										</tr>
@@ -132,10 +131,17 @@ if (isset($_GET['drugs'])) {
 																<input readonly value="<?php echo $row_searchDrug['drug_expiry_date']; ?>" name="drug_expired_date" type="date" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Expired Date">
 															</div>
 														</div>
-														<div class="form-group">
-															<label for="quantity">Quantity</label>
-															<input readonly value="<?php echo $row_searchDrug['drug_quantity']; ?>" type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
+														<div style="display: flex; justify-content: space-evenly;">
+															<div class="form-group" style="width: 50%;">
+																<label for="quantity">Quantity</label>
+																<input readonly value="<?php echo $row_searchDrug['drug_quantity']; ?>" type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
+															</div>
+															<div class="form-group" style="width: 50%; margin-left: 10px;">
+																<label for="nationality">Price</label>
+																<input readonly value="<?php echo $row_searchDrug['drug_price']; ?>" name="drug_expired_date" type="text" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Expired Date">
+															</div>
 														</div>
+
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -157,7 +163,7 @@ if (isset($_GET['drugs'])) {
 													</div>
 													<form method="POST">
 														<div class="modal-body">
-														<input type="hidden" value="<?php echo  $row_searchDrug['drug_code'] ?>" name="drug_id">
+															<input type="hidden" value="<?php echo  $row_searchDrug['drug_code'] ?>" name="drug_id">
 
 															<div class="form-group">
 																<label for="name">Drugs Name</label>
@@ -181,10 +187,16 @@ if (isset($_GET['drugs'])) {
 																	<input value="<?php echo $row_searchDrug['drug_expiry_date']; ?>" name="drug_expired_date" type="date" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Expired Date">
 																</div>
 															</div>
-															<div class="form-group">
+															<div style="display: flex; justify-content: space-evenly;">
+															<div class="form-group" style="width: 50%;">
 																<label for="quantity">Quantity</label>
-																<input value="<?php echo $row_searchDrug['drug_quantity']; ?>" type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
+																<input  value="<?php echo $row_searchDrug['drug_quantity']; ?>" type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
 															</div>
+															<div class="form-group" style="width: 50%; margin-left: 10px;">
+																<label for="nationality">Price</label>
+																<input  value="<?php echo $row_searchDrug['drug_price']; ?>" name="drug_price" type="text" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Price">
+															</div>
+														</div>
 														</div>
 														<div class="modal-footer">
 															<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -21,7 +21,16 @@
                 $row = $result->fetch_assoc();
                 $_SESSION['staff_id'] = $row['staff_id'];
                 $_SESSION['list_medicine'] = array(); 
-                header('location: staff/');
+                
+                if($row['staff_type'] === '1'){
+                    header('location: doctor/?dashboard');
+                } else if($row['staff_type'] === '0') {
+                    header('location: admin/?dashboard');
+                } else if($row['staff_type'] === '2') {
+                    header('location: pharmacist/?dashboard');
+                }  else if($row['staff_type'] === '3') {
+                    header('location: receptionist/?dashboard');
+                }
             } else {
                 // Wrong credential
                 echo "<script>alert('Wrong credintials')</script>";

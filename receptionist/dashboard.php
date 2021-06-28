@@ -7,9 +7,7 @@ if (isset($_GET['dashboard'])) {
 				<a href="?dashboard" class="active1"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?patient"><i class="fas fa-user-injured"></i><span style="margin-left: 10px;">Patient</span></a>
-				<a href="?doctor"><i class="fas fa-user-md"></i><span style="margin-left: 10px;">Doctor</span></a>
-				<a href="?order"><i class="fas fa-list-alt"></i><span style="margin-left: 10px;">Order</span></a>
-				<a href="?drugs"><i class="fas fa-capsules"></i><span style="margin-left: 10px;">Drugs</span></a>
+				
 				<a href="?billing"><i class="fas fa-money-bill-alt"></i></i><span style="margin-left: 10px;">Billing</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?profile"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
@@ -46,7 +44,16 @@ if (isset($_GET['dashboard'])) {
 					<div><label style="font-size: 20px;">Total <b>Warded</b> Patient</label></div>
 					<div style="display: flex; margin-top: 10px;">
 						<div><i style="color: #33cabb;" class="fas fa-hospital-alt fa-4x"></i></div>
-						<div style="margin-left: 20px;"><span style="font-size: 50px;">78</span><span style="font-size: 25px;margin-left: 10px;">patients</span></div>
+						<?php
+						$date = date('Y-m-d');
+						$sql10 = "SELECT COUNT(*) AS totalPatient FROM medical_history WHERE history_ward = 'Yes'";
+						$result_total_count = mysqli_query($conn, $sql10);
+
+						if ($result_total_count->num_rows > 0) {
+							$row_total_count = $result_total_count->fetch_assoc();
+						}
+						?>
+						<div style="margin-left: 20px;"><span style="font-size: 50px;"><?php echo $row_total_count['totalPatient'] ?></span><span style="font-size: 25px;margin-left: 10px;">patients</span></div>
 					</div>
 				</div>
 				<div style="width: calc(100%/3);
