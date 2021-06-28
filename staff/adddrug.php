@@ -6,11 +6,11 @@ if (isset($_POST['register_drug'])) {
 	$drug_receive_date = $_POST['drug_receive_date'];
 	$drug_expired_date = $_POST['drug_expired_date'];
 	$drug_quantity = $_POST['drug_quantity'];
-
+	$drug_price = $_POST['drug_price'];
 
 	// Record data in database
-	$stmt = $conn->prepare("INSERT INTO drug_information (drug_name, drug_description, drug_doses, drug_date_receive, drug_expiry_date, drug_quantity) VALUES (?, ?, ?, ?, ?, ?)");
-	$stmt->bind_param("sssssi", $drug_name, $drug_description, $drug_doses, $drug_receive_date, $drug_expired_date, $drug_quantity);
+	$stmt = $conn->prepare("INSERT INTO drug_information (drug_name, drug_description, drug_doses, drug_date_receive, drug_expiry_date, drug_quantity, drug_price) VALUES (?, ?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("sssssis", $drug_name, $drug_description, $drug_doses, $drug_receive_date, $drug_expired_date, $drug_quantity, $drug_price);
 	
 
 
@@ -74,10 +74,17 @@ if (isset($_GET['adddrug'])) {
 							<input name="drug_expired_date" type="date" min="<?php echo $date; ?>" class="form-control" id="expDate" placeholder="Expired Date">
 						</div>
 					</div>
-					<div class="form-group">
+					<div style="display: flex; justify-content: space-evenly;">
+					<div class="form-group" style="width: 50%;">
 						<label for="quantity">Quantity</label>
 						<input type="number" class="form-control" id="quantity" placeholder="Enter Drugs Quantity" name="drug_quantity" min="0">
 					</div>
+					<div class="form-group" style="width: 50%;  margin-left: 10px;">
+						<label for="price">Price (RM)</label>
+						<input type="text" class="form-control" id="price" placeholder="Enter Price" name="drug_price" min="0">
+					</div>
+					</div>
+					
 					<hr>
 					<center>
 						<button type="submit" name="register_drug" class="btn btn-primary sign-up-btn" style="width: 100%;">Register</button>
