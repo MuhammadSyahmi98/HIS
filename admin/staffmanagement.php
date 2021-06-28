@@ -37,7 +37,7 @@ if (isset($_GET['staffmanagement'])) {
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?staffmanagement" class="active1"><i class="fas fa-users"></i><span style="margin-left: 10px;">Staff Management</span></a>
-				<a href="?report" class="active1"><i class="fas fa-users"></i><span style="margin-left: 10px;">Report</span></a>
+				<a href="?report" class=""><i class="fas fa-users"></i><span style="margin-left: 10px;">Report</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?profile"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
 			</div>
