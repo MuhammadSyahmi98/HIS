@@ -64,7 +64,7 @@ $staff_id = $_SESSION['staff_id'];
 <body>
 
 	<?php include('header.php') ?>
-
+	<?php include('report.php') ?>
 	<?php include('dashboard.php') ?>
 	<?php include('staffmanagement.php') ?>
 	<?php include('addstaff.php') ?>

@@ -12,7 +12,7 @@
         if (!empty($username) && !empty($password)) {
 
             $password;
-            $sql = "SELECT * FROM staff WHERE staff_username = '" . $username . "' or staff_password = '" . $password . "'";
+            $sql = "SELECT * FROM staff WHERE staff_username = '" . $username . "' AND staff_password = '" . $password . "'";
 
             $result = mysqli_query($conn, $sql);
 
