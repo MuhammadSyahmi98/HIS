@@ -7,9 +7,7 @@ if (isset($_GET['billing'])) {
 				<a href="?dashboard"><i class="fas fa-columns"></i><span style="margin-left: 10px;">Dashboard</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?patient"><i class="fas fa-user-injured"></i><span style="margin-left: 10px;">Patient</span></a>
-				<a href="?doctor"><i class="fas fa-user-md"></i><span style="margin-left: 10px;">Doctor</span></a>
-				<a href="?order"><i class="fas fa-list-alt"></i><span style="margin-left: 10px;">Order</span></a>
-				<a href="?drugs"><i class="fas fa-capsules"></i><span style="margin-left: 10px;">Drugs</span></a>
+				
 				<a href="?billing" class="active1"><i class="fas fa-money-bill-alt"></i></i><span style="margin-left: 10px;">Billing</span></a>
 				<div class="dropdown-divider"></div>
 				<a href="?profile"><i class="fas fa-user-circle"></i><span style="margin-left: 10px;">User Profile</span></a>
@@ -162,17 +160,18 @@ if (isset($_GET['billing'])) {
 						<table id="historylist" class="display" style="width:100%">
 							<thead>
 								<tr>
-									<th width="5%">#</th>
+									<th>#</th>
 									<th>Name</th>
 									<th>IC Number</th>
 									<th>Status</th>
 									<th>Bill</th>
+									<th>Date</th>
 									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php
-								$sql_complete = "SELECT * FROM medical_history INNER JOIN patient_information WHERE medical_history.patient_PMI = patient_information.patient_PMI AND payment_status = 'Complete'";
+								$sql_complete = "SELECT * FROM payment INNER JOIN medical_history INNER JOIN patient_information WHERE payment.history_id = medical_history.history_id AND medical_history.patient_PMI = patient_information.patient_PMI AND payment_status = 'Complete'";
 								$result_complete = mysqli_query($conn, $sql_complete);
 
 								if ($result_complete->num_rows > 0) {
@@ -182,15 +181,15 @@ if (isset($_GET['billing'])) {
 								?>
 										<tr>
 											<td><?php echo $we;?></td>
-											<td>Luhman Musa Pawer</td>
-											<td>991015081232</td>
-											<td>CASH/INSURANCE</td>
-											<td>RM 25.00</td>
+											<td><?php echo $row_complete['patient_name'];?></td>
+											<td><?php echo $row_complete['patient_ic_number'];?></td>
+											<td style="text-transform: capitalize;"><?php echo $row_complete['payment_method'];?></td>
+											<td>RM <?php echo $row_complete['payment_total'];?></td>
+											<td><?php echo $row_complete['payment_date'];?></td>
 											<td>
+												
 												<center>
-													<button class="btn btn-primary sign-up-btn" style="width: 100%" data-toggle="modal" data-target="#printbill">
-														View<span style="margin-left: 10px;"><i class="fas fa-angle-double-right"></i></span>
-													</button>
+													<a href="?viewpayment&id=<?php echo $row_complete['history_id']; ?>" class="btn btn-primary sign-up-btn">View <i class="fas fa-angle-double-right"></i></a>
 												</center>
 											</td>
 										</tr>

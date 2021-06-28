@@ -88,19 +88,11 @@ $staff_id = $_SESSION['staff_id'];
 <body>
 
 	<?php include('header.php') ?>
-
 	<?php include('dashboard.php') ?>
-	<?php include('patient.php') ?>
-	<?php include('addpatient.php') ?>
 	<?php include('doctor.php') ?>
 	<?php include('treatpatient.php') ?>
-	<?php include('order.php') ?>
-	<?php include('drugs.php') ?>
-	<?php include('adddrug.php') ?>
-	<?php include('billing.php') ?>
 	<?php include('profile.php') ?>
-	<?php include('payment.php') ?>
-	<?php include('paymentward.php') ?>
+
 
 
 

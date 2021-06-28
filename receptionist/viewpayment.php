@@ -1,7 +1,17 @@
 <?php
-if (isset($_GET['paymentward'])) {
 
-	
+
+if (isset($_GET['viewpayment']) && isset($_GET['id'])) {
+
+	$history_id = $_GET['id'];
+
+	$sql_payment = "SELECT * FROM medical_history INNER JOIN patient_information WHERE medical_history.patient_PMI = patient_information.patient_PMI AND history_id = " . $history_id . "";
+	$result_payment = mysqli_query($conn, $sql_payment);
+
+	if ($result_payment->num_rows > 0) {
+		$row_payment = $result_payment->fetch_assoc();
+	}
+
 ?>
 	<div class="pageSize" style="display: flex; margin-top: 50px;">
 		<div>
@@ -39,6 +49,9 @@ if (isset($_GET['paymentward'])) {
 				<div>
 					<div class="form-group">
 						<label for="name">Name</label>
+						<?php
+						$patient_PMI = $row_payment['patient_PMI'];
+						?>
 						<input value="<?php echo $row_payment['patient_name']; ?>" type="text" class="form-control" id="name" placeholder="Enter Name" name="name" disabled>
 					</div>
 					<div style="display: flex; justify-content: space-evenly;">
@@ -48,11 +61,11 @@ if (isset($_GET['paymentward'])) {
 						</div>
 						<div class="form-group" style="width: 50%; margin-left: 10px;">
 							<label for="dob">Date Of Birth</label>
-							<input  value="<?php echo $row_payment['patient_BOD']; ?>" type="date" class="form-control" id="dob" name="dob" disabled>
+							<input value="<?php echo $row_payment['patient_BOD']; ?>" type="date" class="form-control" id="dob" name="dob" disabled>
 						</div>
 						<div class="form-group" style="width: 50%; margin-left: 10px;">
 							<label for="blood">Blood Type</label>
-							<input value="<?php echo $row_payment['patient_blood_type']; ?>" type="date" class="form-control" id="blood" name="blood" disabled>
+							<input value="<?php echo $row_payment['patient_blood_type']; ?>" type="text" class="form-control" id="blood" name="blood" disabled>
 						</div>
 					</div>
 					<div style="display: flex; justify-content: space-evenly;">
@@ -62,7 +75,7 @@ if (isset($_GET['paymentward'])) {
 						</div>
 						<div class="form-group" style="width: 50%; margin-left: 10px;">
 							<label for="phonenumber">Phone Number</label>
-							<input  value="<?php echo $row_payment['patient_phone_number']; ?>" type="number" class="form-control" id="phonenumber" placeholder="Enter Phone Number" name="phonenumber" disabled>
+							<input value="<?php echo $row_payment['patient_phone_number']; ?>" type="number" class="form-control" id="phonenumber" placeholder="Enter Phone Number" name="phonenumber" disabled>
 						</div>
 					</div>
 				</div>
@@ -86,20 +99,34 @@ if (isset($_GET['paymentward'])) {
 							<td>Quantity</td>
 							<td>Price</td>
 						</tr>
-						<thead class="thead-dark">
-							<tr>
-								<th colspan="4" scope="col">Ward</th>
-							</tr>
-						</thead>
-						<tr class="table-activet">
-							<td>Name</td>
-							<td>Price/Quantity</td>
-							<td>Quantity</td>
-							<td>Price</td>
-						</tr>
+						<?php
+						$sql_payment2 = "SELECT * FROM drug_history INNER JOIN drug_information WHERE drug_history.drug_code = drug_information.drug_code AND history_id = " . $history_id . "";
+						$result_payment2 = mysqli_query($conn, $sql_payment2);
+
+						if ($result_payment2->num_rows > 0) {
+							$total_price = 0;
+							while ($row_payment2 = $result_payment2->fetch_assoc()) {
+						?>
+								<tr>
+									<td><?php echo $row_payment2['drug_name']; ?></td>
+									<td><?php echo $row_payment2['drug_price']; ?></td>
+									<td><?php echo $row_payment2['drug_history_quantity']; ?></td>
+									<?php
+									$subtotal1 = 0;
+									$subtotal1 = $row_payment2['drug_history_quantity'] * $row_payment2['drug_price'];
+									$total_price += $subtotal1;
+									?>
+									<td><?php echo $subtotal1; ?></td>
+								</tr>
+						<?php
+							}
+						}
+
+						?>
+
 						<tr>
 							<td colspan="3">Total Price</td>
-							<td>RM 55.00</td>
+							<td>RM <?php echo $total_price; ?></td>
 						</tr>
 					</table>
 				</div>
@@ -111,10 +138,19 @@ if (isset($_GET['paymentward'])) {
 				</div>
 				<br>
 				<div>
-					<select class="form-control" id="payment">
+					<?php
+					$select_insurance = "SELECT * FROM payment WHERE history_id = " . $history_id . "";
+					$select_insurance = mysqli_query($conn, $select_insurance);
+
+					if ($select_insurance->num_rows > 0) {
+						$row_payment4 = $select_insurance->fetch_assoc();
+					}
+					?>
+
+					<select disabled class="form-control" id="payment">
 						<option selected="select" disabled="disable">--Please Select Payment Method--</option>
-						<option value="1">Cash</option>
-						<option value="2">Insurance</option>
+						<option value="1" <?php if($row_payment4['payment_method']==='cash'){echo 'selected';} ?>>Cash</option>
+						<option value="2" <?php if($row_payment4['payment_method']==='insurance'){echo 'selected';} ?>>Insurance</option>
 					</select>
 				</div>
 
@@ -122,7 +158,11 @@ if (isset($_GET['paymentward'])) {
 					<br>
 					<div>
 						<div>
-							<button class="btn btn-success" style="width: 100%">Payment Completed</button>
+							<form method="POST">
+								<input name="history_id" type="hidden" type="text" value="<?php echo $history_id; ?>">
+								<input name="totalPrice" type="hidden" type="text" value="<?php echo $total_price; ?>">
+
+							</form>
 						</div>
 					</div>
 				</div>
@@ -131,17 +171,31 @@ if (isset($_GET['paymentward'])) {
 					<br>
 					<div>
 						<table class="table">
+							<?php
+
+							$sql_insurance2 = "SELECT * FROM insurance_information WHERE patient_PMI = " . $patient_PMI . "";
+							$result_insurance2 = mysqli_query($conn, $sql_insurance2);
+
+							if ($result_insurance2->num_rows > 0) {
+								$row_insurance2 = $result_insurance2->fetch_assoc();
+							}
+
+							?>
 							<tr>
 								<th scope="col" width="20%">Insurance Name</th>
-								<td>UTeM Holding</td>
+								<td><?php echo $row_insurance2['insurance_name']; ?></td>
 							</tr>
 							<tr>
 								<th scope="col">Insurance Status</th>
-								<td>Active</td>
+								<td><?php echo $row_insurance2['insurance_status']; ?></td>
 							</tr>
 						</table>
 						<div>
-							<button class="btn btn-success" style="width: 100%">Issued to Insurance</button>
+							<form method="POST">
+								<input name="history_id" type="hidden" type="text" value="<?php echo $history_id; ?>">
+								<input name="totalPrice" type="hidden" type="text" value="<?php echo $total_price; ?>">
+
+							</form>
 						</div>
 					</div>
 				</div>
