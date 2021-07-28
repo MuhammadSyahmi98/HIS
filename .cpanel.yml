@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/syahmi/his.muhammadsyahmi.com/
+    - /bin/cp -R * $DEPLOYPATH
