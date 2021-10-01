@@ -11,14 +11,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="src/style.css">
-    <!-- <style type="text/css">
+    <style type="text/css">
         body{
             background-image:url('src/img/bg3.jpg');
             background-attachment:fixed;
             background-repeat: no-repeat;
             background-size: cover;
         }
-    </style> -->
+    </style>
 </head>
 <body>
     <?php include('header.php') ?>
